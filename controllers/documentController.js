@@ -26,7 +26,7 @@ const receiveDoc = async (req, res) => {
     try {
         // Get access token
         const auth = new GoogleAuth({
-            keyFilename: 'environment/documenclassificationmvp-8b42643abad5.json', // Update path
+            keyFilename: '/etc/secrets/gc.json', // Update path
             scopes: ['https://www.googleapis.com/auth/cloud-platform']
         });
 
