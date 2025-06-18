@@ -1,0 +1,429 @@
+{
+	"info": {
+		"_postman_id": "a621abd3-82ee-4ba0-9676-031f004b665b",
+		"name": "Happy path",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8630177"
+	},
+	"item": [
+		{
+			"name": "register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let json = pm.response.json();\r",
+							"\r",
+							"pm.environment.set(\"encryptedPass\", json.user.password);\r",
+							"pm.environment.set(\"userId\", json.user._id);\r",
+							"\r",
+							"pm.test(\"Name matches\", function () {\r",
+							"    pm.expect(json.user.name).to.eql(pm.environment.get(\"name\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Email matches\", function () {\r",
+							"    pm.expect(json.user.email).to.eql(pm.environment.get(\"email\"));\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"function generateUUID() {\r",
+							"  return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {\r",
+							"    let r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);\r",
+							"    return v.toString(16);\r",
+							"  });\r",
+							"}\r",
+							"let uuid = generateUUID();\r",
+							"let email = uuid + `@example.com`;\r",
+							"\r",
+							"pm.environment.set(\"name\", \"Jane Doe\");\r",
+							"pm.environment.set(\"email\", email);\r",
+							"pm.environment.set(\"pass\", \"StrongPass123!\");\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"{{name}}\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{pass}}\"\r\n\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/user/register",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let json = pm.response.json();\r",
+							"pm.environment.set(\"authToken\", json.token)\r",
+							"\r",
+							"pm.test(\"Name matches\", function () {\r",
+							"    pm.expect(json.user.name).to.eql(pm.environment.get(\"name\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Email matches\", function () {\r",
+							"    pm.expect(json.user.email).to.eql(pm.environment.get(\"email\"));\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{pass}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/user/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getuser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let json = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Name matches\", function () {\r",
+							"    pm.expect(json.user.name).to.eql(pm.environment.get(\"name\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Email matches\", function () {\r",
+							"    pm.expect(json.user.email).to.eql(pm.environment.get(\"email\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"ID matches\", function () {\r",
+							"    pm.expect(json.user._id).to.eql(pm.environment.get(\"userId\"));\r",
+							"});\r",
+							"\r",
+							"//This shouldnt be returned by this API, there isn't any reason for it to do so.\r",
+							"pm.test(\"encrypted pass matches\", function () {\r",
+							"    pm.expect(json.user.password).to.eql(pm.environment.get(\"encryptedPass\"));\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/user/getUser",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"getUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addshift",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let json = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Message is correct\", function () {\r",
+							"    pm.expect(json.message).to.eql(\"Shift added successfully\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Test Shift\",\r\n  \"description\": \"10pm to 6am in Zone 1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/shift/addshift",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"shift",
+						"addshift"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getshift",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let json = pm.response.json();\r",
+							"\r",
+							"pm.test(\"At least one shift exists\", function () {\r",
+							"    pm.expect(json.length).to.be.above(0);\r",
+							"});\r",
+							"\r",
+							"if (Array.isArray(json)) {\r",
+							"    let ids = json.map(item => item._id); \r",
+							"    pm.environment.set(\"shiftIds\", JSON.stringify(ids)); \r",
+							"}\r",
+							"\r",
+							"if (json.length > 0) {\r",
+							"    let id = json[0]._id;\r",
+							"    pm.environment.set(\"shiftId\", id);\r",
+							"} else {\r",
+							"    pm.environment.unset(\"shiftId\");\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/shift/getshift",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"shift",
+						"getshift"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "removeshift",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let json = pm.response.json();\r",
+							"pm.test(\"Message is correct\", function () {\r",
+							"    pm.expect(json.message).to.eql(\"Shift deleted successfully\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/shift/removeshift?id={{shiftId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"shift",
+						"removeshift"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{shiftId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getshift after remove",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let json = pm.response.json();\r",
+							"let shiftId = pm.environment.get(\"shiftId\");\r",
+							"\r",
+							"pm.test(\"Correct shift removed\", function () {\r",
+							"    if (Array.isArray(json)) {\r",
+							"        let ids = json.map(item => item._id); \r",
+							"        pm.expect(ids).to.not.include(shiftId);\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/shift/getshift",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"shift",
+						"getshift"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

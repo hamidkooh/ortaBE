@@ -1,0 +1,25 @@
+My candidate cannot log in.
+Is their email address the same as the one registered?
+If they get an authentication failed message - this indicates that their email or password have been entered incorrectly
+Ensure they are trying to log in via onboarding.orta.co.uk and not through the Orta app.
+
+Why can’t my candidate cannot upload their documents?
+Are the files being uploaded 3MB or less?
+Scanned documents will not be uploaded. Files must be a PDF, JPG or PNG.
+Ask the candidate to refresh the page to ensure that the candidate has not already uploaded the files.
+
+Why can my candidate not submit their application?
+A section of the application has not been fully completed.
+
+Problems with submitting DBS checks
+Please ensure no special characters or symbols are included in the address lines.
+Anyone with Mrs listed as their title must complete the previous names section.
+Address history must cover a minimum of 5 years with no gaps.
+If the applicant has used middle names in previous submissions they must also be included  again.
+Have the additional applicant details questions been answered?
+
+Can I delete candidates that have left?
+On the drop down bar, go to the actions section, select archive user and enter the reason why. This will remove the candidate from your staff list but will keep the user's application and advise you if they try to reapply again in the future. You can reactivate the candidate at any time.
+
+My candidate hasn’t received an email to create a password
+Ensure the email address is correct and advise the candidate the email will be from no-reply <orta.co.uk> and will most likely go into the junk folder. You can resend a link by using the drop down menu, go to the actions section and resend onboarding link.
