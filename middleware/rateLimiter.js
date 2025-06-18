@@ -1,18 +1,10 @@
 import Redis from 'ioredis';
-import { createClient } from 'redis';
 import { RateLimiterRedis } from 'rate-limiter-flexible';
 import dotenv from "dotenv";
 
 dotenv.config()
 
-const client = new createClient({
-    username: 'default',
-    password: '1Doxp057KCF5dBTlBfHFbsLHr1B1L14H',
-    socket: {
-        host: 'redis-14225.c328.europe-west3-1.gce.redns.redis-cloud.com',
-        port: 14225
-    }
-});
+const client = new Redis("redis://default:1Doxp057KCF5dBTlBfHFbsLHr1B1L14H@redis-14225.c328.europe-west3-1.gce.redns.redis-cloud.com:14225")
 
 // const redisClient = new Redis({
 //     enableOfflineQueue: false, // Prevents commands from being queued while offline
