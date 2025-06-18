@@ -1,10 +1,11 @@
 import Redis from 'ioredis';
+import { createClient } from 'redis';
 import { RateLimiterRedis } from 'rate-limiter-flexible';
 import dotenv from "dotenv";
 
 dotenv.config()
 
-const client = new Redis({
+const client = new createClient({
     username: 'default',
     password: '1Doxp057KCF5dBTlBfHFbsLHr1B1L14H',
     socket: {
