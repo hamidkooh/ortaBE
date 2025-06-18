@@ -18,22 +18,20 @@ const receiveDoc = async (req, res) => {
         return res.status(400).json({ isValid: 'invalid', message: 'No file uploaded.' });
     }
 
-    const projectId = '460809723218';
-    const location = 'eu';
-    const processorId = 'e90ba84e8d7769e';
-    const endpoint = `https://eu-documentai.googleapis.com/v1/projects/${projectId}/locations/${location}/processors/${processorId}:process`;
+
+    const endpoint = process.env.OCR_ENDPOINT
+
 
     try {
-        // Get access token
+
         const auth = new GoogleAuth({
-            keyFilename: '/etc/secrets/gc.json', // Update path
+            keyFilename: `${process.env.GC_DOC_PATH}`,
             scopes: ['https://www.googleapis.com/auth/cloud-platform']
         });
 
         const client = await auth.getClient();
         const accessToken = await client.getAccessToken();
 
-        // Prepare the request body
         const imageBuffer = file.buffer;
         const encodedImage = imageBuffer.toString('base64');
 
@@ -46,7 +44,6 @@ const receiveDoc = async (req, res) => {
 
         console.log(`Making HTTP request to: ${endpoint}`);
 
-        // Make the HTTP request
         const response = await fetch(endpoint, {
             method: 'POST',
             headers: {

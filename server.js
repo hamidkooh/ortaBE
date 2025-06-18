@@ -35,6 +35,10 @@ mongoose.connect(process.env.MONGO_URI, {
 })
 
 //api endpoints
+app.get('/api/healthcheck', (req, res) => {
+  res.status(200).send('OK');
+});
+
 app.use("/api/user", userRouter)
 app.use("/api/shift", shiftRouter)
 app.use("/api/forgotPassword", forgotPasswordRouter)
