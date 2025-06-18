@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 
 dotenv.config()
 
-const client = createClient({
+const client = new Redis({
     username: 'default',
     password: '1Doxp057KCF5dBTlBfHFbsLHr1B1L14H',
     socket: {
